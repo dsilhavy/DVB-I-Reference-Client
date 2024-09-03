@@ -1,4 +1,5 @@
-var PROVIDER_LIST = INSTALL_LOCATION + "/backend/servicelist_registry.php";
+//var PROVIDER_LIST = INSTALL_LOCATION + "/backend/servicelist_registry.php";
+var PROVIDER_LIST = "http://10.147.67.219:3333/dvb-i/5g-mag/5gmag-service-list-offering.xml";
 
 /** LCN_services_only
  * set to true to only include services in the selected region that are included in the reevant LCN table.

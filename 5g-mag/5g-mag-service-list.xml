@@ -1,0 +1,45 @@
+<?xml
+        version="1.0" encoding="UTF-8"?>
+<ServiceList xmlns="urn:dvb:metadata:servicediscovery:2024" xml:lang="en" xmlns:mpeg7="urn:tva:mpeg7:2008" xmlns:dvbisd="urn:dvb:metadata:servicediscovery:2024" xmlns:dvbi-types="urn:dvb:metadata:servicediscovery-types:2023" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:dvb:metadata:servicediscovery:2024 ../dvbi_v6.0.xsd vnd:apple:mpegurl ../hls-url.xsd" xmlns:dvbisd-playlist="urn:dvb:dvbi:servicediscovery-playlist:2019" xmlns:tva="urn:tva:metadata:2024" xmlns:hls="vnd:apple:mpegurl" responseStatus="OK" version="1" id="tag:onscreenpublishing.com,2024:5G_Test_ServiceList">
+    <!--Elapsed time: 0.0023000240325928-->
+    <Name xml:lang="en">5G Test ServiceList</Name>
+    <!--Elapsed time: 0.079859972000122-->
+    <!--Elapsed time: 0.086418867111206-->
+    <!--Elapsed time: 0.09301495552063-->
+    <!--Create LCNTableList 2 above merged tables-->
+    <LCNTableList>
+        <LCNTable>
+            <!--2. LCN count 2-->
+            <LCN channelNumber="1" serviceRef="tag:onscreenpublishing.com,2024:5G_test_service_1"/>
+            <LCN channelNumber="2" serviceRef="tag:onscreenpublishing.com,2024:5G_test_service_2"/>
+            <!--2. LCN Range count 0-->
+        </LCNTable>
+    </LCNTableList>
+    <!--Elapsed time: 0.12945294380188-->
+    <Service xml:lang="en" version="1">
+        <UniqueIdentifier>tag:onscreenpublishing.com,2024:5G_test_service_1</UniqueIdentifier>
+        <ServiceInstance priority="1">
+            <OtherDeliveryParameters extensionName="vnd.apple.mpegurl" xsi:type="hls:m3u8RefType">
+                <hls:UriBasedLocation contentType="application/vnd.apple.mpegurl">
+                    <dvbi-types:URI>http://127.0.0.1:3020/watchfolder/hls/manifest.m3u8</dvbi-types:URI>
+                </hls:UriBasedLocation>
+            </OtherDeliveryParameters>
+        </ServiceInstance>
+        <ServiceName xml:lang="en">5G test service 1</ServiceName>
+        <ProviderName xml:lang="en">OnScreen Publishing</ProviderName>
+        <ServiceType href="urn:dvb:metadata:cs:ServiceTypeCS:2019:linear"/>
+    </Service>
+    <Service xml:lang="en" version="1">
+        <UniqueIdentifier>tag:onscreenpublishing.com,2024:5G_test_service_2</UniqueIdentifier>
+        <ServiceInstance priority="1">
+            <OtherDeliveryParameters extensionName="vnd.apple.mpegurl" xsi:type="hls:m3u8RefType">
+                <hls:UriBasedLocation contentType="application/vnd.apple.mpegurl">
+                    <dvbi-types:URI>http://127.0.0.1:3020/watchfolder/hls/stream_0.m3u8</dvbi-types:URI>
+                </hls:UriBasedLocation>
+            </OtherDeliveryParameters>
+        </ServiceInstance>
+        <ServiceName xml:lang="en">5G test service 2</ServiceName>
+        <ProviderName xml:lang="en">OnScreen Publishing</ProviderName>
+        <ServiceType href="urn:dvb:metadata:cs:ServiceTypeCS:2019:linear"/>
+    </Service>
+</ServiceList>
