@@ -1,5 +1,5 @@
 //var PROVIDER_LIST = INSTALL_LOCATION + "/backend/servicelist_registry.php";
-var PROVIDER_LIST = "http://10.147.67.219:3333/dvb-i/5g-mag/5gmag-service-list-offering.xml";
+var PROVIDER_LIST = "http://192.168.178.20:3333/dvb-i/5g-mag/5gmag-service-list-offering.xml";
 
 /** LCN_services_only
  * set to true to only include services in the selected region that are included in the reevant LCN table.
@@ -18,8 +18,8 @@ function parseContentGuideSource(src) {
   if (src) {
     newCS.id = src.getAttribute("CGSID");
     newCS.contentGuideURI = src
-      .getElementsByTagNameNS(DVBi_ns, "ScheduleInfoEndpoint")[0]
-      .getElementsByTagNameNS(DVBi_TYPES_ns, "URI")[0].childNodes[0].nodeValue;
+        .getElementsByTagNameNS(DVBi_ns, "ScheduleInfoEndpoint")[0]
+        .getElementsByTagNameNS(DVBi_TYPES_ns, "URI")[0].childNodes[0].nodeValue;
     var moreEpisodes = src.getElementsByTagNameNS(DVBi_ns, "MoreEpisodesEndpoint");
     if (moreEpisodes.length > 0) {
       newCS.moreEpisodesURI = moreEpisodes[0].getElementsByTagNameNS(DVBi_TYPES_ns, "URI")[0].childNodes[0].nodeValue;
@@ -50,7 +50,7 @@ function getChildValues(element, childElementName, attrib = null) {
 
 function parseTVAAudioAttributesType(audio_attributes_element) {
   var res = {},
-    se;
+      se;
   se = getChildElements(audio_attributes_element, "Coding");
   res.coding = se.length > 0 ? AudioCodingCS(getChildValue(audio_attributes_element, "Coding", "href")) : null;
   //res.num_channels = getChildValue(audio_attributes_element, "NumOfChannels");
@@ -218,46 +218,46 @@ function formatAccessibilityAttributes(accessibility_attributes) {
   function AppAndPurpose(el, index) {
     if (!el) return "";
     return (
-      (index != 0 ? "<tr>" : "") +
-      "<td>" +
-      (el.app ? el.app + "<br/>" : "") +
-      (el.purpose ? makeString(el.purpose) : "") +
-      "</td></tr>"
+        (index != 0 ? "<tr>" : "") +
+        "<td>" +
+        (el.app ? el.app + "<br/>" : "") +
+        (el.purpose ? makeString(el.purpose) : "") +
+        "</td></tr>"
     );
   }
 
   function AppAndAudio(el, index) {
     if (!el) return "";
     return (
-      (index != 0 ? "<tr>" : "") +
-      "<td>" +
-      (el.app ? el.app + "<br/>" : "") +
-      (el.audio_attributes ? AudioAttributesString(el.audio_attributes) : "") +
-      "</td></tr>"
+        (index != 0 ? "<tr>" : "") +
+        "<td>" +
+        (el.app ? el.app + "<br/>" : "") +
+        (el.audio_attributes ? AudioAttributesString(el.audio_attributes) : "") +
+        "</td></tr>"
     );
   }
 
   // include any accessibility items
   var res = "<table id='accessibility-info'>",
-    count = 0,
-    i;
+      count = 0,
+      i;
 
   if (accessibility_attributes.subtitles) {
     count += accessibility_attributes.subtitles.length;
     res += `<tr><td rowspan=${accessibility_attributes.subtitles.length}><img style="${accessibility_colour_result.filter}" src="${CAPTIONS_ICON}" height="20" alt="Subtitle"/></td>`;
     for (i = 0; i < accessibility_attributes.subtitles.length; i++) {
       var sub = accessibility_attributes.subtitles[i],
-        attrs = [];
+          attrs = [];
       if (sub.language) attrs.push(i18n.getLanguageName(sub.language));
       if (sub.carriage) attrs.push(makeString(sub.carriage));
       if (sub.coding) attrs.push(makeString(sub.coding));
       if (sub.purpose) attrs.push(makeString(sub.purpose));
       attrs.push(
-        `<img style="${
-          sub.carriage.includes(OPEN_SUBITLES_STRING)
-            ? no_accessibility_colour_result.filter
-            : accessibility_colour_result.filter
-        }" src="${CLOSED_CAPTIONS_ICON}" height="20" alt="captions"/>`
+          `<img style="${
+              sub.carriage.includes(OPEN_SUBITLES_STRING)
+                  ? no_accessibility_colour_result.filter
+                  : accessibility_colour_result.filter
+          }" src="${CLOSED_CAPTIONS_ICON}" height="20" alt="captions"/>`
       );
 
       res += (i != 0 ? "<tr>" : "") + "<td>" + (sub.app ? sub.app + "<br/>" : "") + attrs.join(" / ") + "</td></tr>";
@@ -268,11 +268,11 @@ function formatAccessibilityAttributes(accessibility_attributes) {
     res += `<tr><td rowspan=${accessibility_attributes.audio_descriptions.length}><img style="${accessibility_colour_result.filter}" src="${AUDIO_DESCRIPTION_ICON}" height="20" alt="Audio Description"/></td>`;
     for (i = 0; i < accessibility_attributes.audio_descriptions.length; i++) {
       var ad = accessibility_attributes.audio_descriptions[i],
-        attrs = [];
+          attrs = [];
       attrs.push(
-        `<img style="${
-          ad.mix == "true" ? accessibility_colour_result.filter : no_accessibility_colour_result.filter
-        }" src="${RECEIVER_MIX_ICON}" height="20" alt="RX-MIX"/>`
+          `<img style="${
+              ad.mix == "true" ? accessibility_colour_result.filter : no_accessibility_colour_result.filter
+          }" src="${RECEIVER_MIX_ICON}" height="20" alt="RX-MIX"/>`
       );
       if (ad.audio_attributes) attrs.push(AudioAttributesString(ad.audio_attributes));
       res += (i != 0 ? "<tr>" : "") + "<td>" + (ad.app ? ad.app + "<br/>" : "") + attrs.join(" / ") + "</td></tr>";
@@ -284,13 +284,13 @@ function formatAccessibilityAttributes(accessibility_attributes) {
     res += `<tr><td rowspan=${accessibility_attributes.signings.length}><img style="${accessibility_colour_result.filter}" src="${SIGNING_ICON}" height="20" alt="Signing"/></td>`;
     for (i = 0; i < accessibility_attributes.signings.length; i++) {
       var sa = accessibility_attributes.signings[i],
-        attrs = [];
+          attrs = [];
       if (sa.coding) attrs.push(makeString(sa.coding));
       if (sa.language) attrs.push(i18n.getLanguageName(sa.language));
       attrs.push(
-        `<img style="${
-          sa.closed == "true" ? accessibility_colour_result.filter : no_accessibility_colour_result.filter
-        }" src="${CLOSED_CAPTIONS_ICON}" height="20" alt="captions"/>`
+          `<img style="${
+              sa.closed == "true" ? accessibility_colour_result.filter : no_accessibility_colour_result.filter
+          }" src="${CLOSED_CAPTIONS_ICON}" height="20" alt="captions"/>`
       );
       res += (i != 0 ? "<tr>" : "") + "<td>" + (sa.app ? sa.app + "<br/>" : "") + attrs.join(" / ") + "</td></tr>";
     }
@@ -379,8 +379,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
       var howRelated1 = relatedMaterial1[j].getElementsByTagNameNS(TVA_ns, "HowRelated")[0].getAttribute("href");
       if (howRelated1 == DVBi_Service_List_Logo) {
         serviceList.image = relatedMaterial1[j]
-          .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-          .getElementsByTagNameNS(TVA_ns, "MediaUri")[0].childNodes[0].nodeValue;
+            .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+            .getElementsByTagNameNS(TVA_ns, "MediaUri")[0].childNodes[0].nodeValue;
       }
     } catch (e) {
       console.log(e);
@@ -445,8 +445,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
     var myContentGuideSource = services[i].getElementsByTagNameNS(DVBi_ns, "ContentGuideSource");
     if (myContentGuideSource.length > 0) {
       chan.contentGuideURI = myContentGuideSource[0]
-        .getElementsByTagNameNS(DVBi_ns, "ScheduleInfoEndpoint")[0]
-        .getElementsByTagNameNS(DVBi_TYPES_ns, "URI")[0].childNodes[0].nodeValue;
+          .getElementsByTagNameNS(DVBi_ns, "ScheduleInfoEndpoint")[0]
+          .getElementsByTagNameNS(DVBi_TYPES_ns, "URI")[0].childNodes[0].nodeValue;
       var moreEpisodes = myContentGuideSource[0].getElementsByTagNameNS(DVBi_ns, "MoreEpisodesEndpoint");
       if (moreEpisodes.length > 0) {
         chan.moreEpisodesURI = moreEpisodes[0].getElementsByTagNameNS(DVBi_TYPES_ns, "URI")[0].childNodes[0].nodeValue;
@@ -511,18 +511,18 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
         var howRelated = relatedMaterial[j].getElementsByTagNameNS(TVA_ns, "HowRelated")[0].getAttribute("href");
         if (howRelated == DVBi_Service_Logo) {
           chan.image = relatedMaterial[j]
-            .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-            .getElementsByTagNameNS(TVA_ns, "MediaUri")[0].childNodes[0].nodeValue;
+              .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+              .getElementsByTagNameNS(TVA_ns, "MediaUri")[0].childNodes[0].nodeValue;
         }
         if (howRelated == DVBi_Out_Of_Service_Logo) {
           chan.out_of_service_image = relatedMaterial[j]
-            .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-            .getElementsByTagNameNS(TVA_ns, "MediaUri")[0].childNodes[0].nodeValue;
+              .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+              .getElementsByTagNameNS(TVA_ns, "MediaUri")[0].childNodes[0].nodeValue;
         } else if (howRelated == DVBi_App_In_Parallel) {
           var app = {};
           var mediaUri = relatedMaterial[j]
-            .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-            .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
+              .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+              .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
           if (mediaUri && mediaUri.childNodes.length > 0) {
             app.url = mediaUri.childNodes[0].nodeValue;
             app.contentType = mediaUri.getAttribute("contentType");
@@ -531,8 +531,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
         } else if (howRelated == DVBi_App_Controlling_Media) {
           var app2 = {};
           var mediaUri2 = relatedMaterial[j]
-            .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-            .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
+              .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+              .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
           if (mediaUri2 && mediaUri2.childNodes.length > 0) {
             app2.url = mediaUri2.childNodes[0].nodeValue;
             app2.contentType = mediaUri2.getAttribute("contentType");
@@ -595,8 +595,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
         for (k = 0; k < instance.contentProtection.length; k++) {
           for (l = 0; l < supportedDrmSystems.length; l++) {
             if (
-              instance.contentProtection[k].drmSystemId &&
-              instance.contentProtection[k].drmSystemId.toLowerCase() == supportedDrmSystems[l].toLowerCase()
+                instance.contentProtection[k].drmSystemId &&
+                instance.contentProtection[k].drmSystemId.toLowerCase() == supportedDrmSystems[l].toLowerCase()
             ) {
               supported = true;
               break;
@@ -650,8 +650,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
           if (howRelated3 == DVBi_App_In_Parallel) {
             app3 = {};
             mediaUri3 = relatedMaterial3[k]
-              .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-              .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
+                .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+                .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
             if (mediaUri3 && mediaUri3.childNodes.length > 0) {
               app3.url = mediaUri3.childNodes[0].nodeValue;
               app3.contentType = mediaUri3.getAttribute("contentType");
@@ -660,8 +660,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
           } else if (howRelated3 == DVBi_App_Controlling_Media) {
             app3 = {};
             mediaUri3 = relatedMaterial3[k]
-              .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
-              .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
+                .getElementsByTagNameNS(TVA_ns, "MediaLocator")[0]
+                .getElementsByTagNameNS(TVA_ns, "MediaUri")[0];
             if (mediaUri3 && mediaUri3.childNodes.length > 0) {
               app3.url = mediaUri3.childNodes[0].nodeValue;
               app3.contentType = mediaUri3.getAttribute("contentType");
@@ -675,8 +675,8 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
       if (serviceInstances[j].getElementsByTagNameNS(DVBi_ns, "DASHDeliveryParameters").length > 0) {
         try {
           instance.dashUrl = serviceInstances[j].getElementsByTagNameNS(
-            DVBi_TYPES_ns,
-            "URI"
+              DVBi_TYPES_ns,
+              "URI"
           )[0].childNodes[0].nodeValue;
           sourceTypes.push("DVB-DASH");
           instances.push(instance);
@@ -685,11 +685,11 @@ function parseServiceList(data, dvbChannels, supportedDrmSystems) {
         var triplets = serviceInstances[j].getElementsByTagNameNS(DVBi_ns, "DVBTriplet");
         if (triplets.length > 0) {
           var triplet2 =
-            triplets[0].getAttribute("origNetId") +
-            "." +
-            triplets[0].getAttribute("tsId") +
-            "." +
-            triplets[0].getAttribute("serviceId");
+              triplets[0].getAttribute("origNetId") +
+              "." +
+              triplets[0].getAttribute("tsId") +
+              "." +
+              triplets[0].getAttribute("serviceId");
           var dvbChannel2 = channelmap[triplet2];
           if (dvbChannel2) {
             if (serviceInstances[j].getElementsByTagNameNS(DVBi_ns, "DVBTDeliveryParameters").length > 0) {
@@ -764,7 +764,7 @@ function getText(element) {
 
 function parseRegion(regionElement, countryCodes) {
   var region = {},
-    j;
+      j;
   if (!countryCodes) {
     region.countryCodes = regionElement.getAttribute("countryCodes");
   } else {
@@ -821,7 +821,7 @@ function parseRegion(regionElement, countryCodes) {
 function findRegionFromPostCode(serviceList, postCode) {
   for (var i = 0; i < serviceList.regions.length; i++) {
     var region = serviceList.regions[i],
-      j;
+        j;
     if (region.postcodes) {
       for (j = 0; j < region.postcodes.length; j++) {
         if (region.postcodes[j] == postCode) {
@@ -880,8 +880,8 @@ function matchPostcodeWildcard(wildcard, postCode) {
 
 function selectServiceListRegion(serviceList, regionId) {
   var lcnTable = null,
-    i,
-    j;
+      i,
+      j;
   var defaultName = "!" + i18n.getString("default_region") + "!";
   var defaultTable = null;
   for (i = 0; i < serviceList.lcnTables.length; i++) {
@@ -962,7 +962,7 @@ function getChildElements(parent, tagName) {
 function generateServiceListQuery(baseurl, providers, language, genre, targetCountry, regulatorListFlag, delivery) {
   var query = baseurl;
   var parameters = [],
-    i;
+      i;
   if (Array.isArray(providers) && providers.length > 0) {
     for (i = 0; i < providers.length; i++) {
       if (providers[i] !== "") {
@@ -1049,8 +1049,8 @@ function parseServiceListProviders(data) {
       var list = {};
       list["name"] = lists[j].getElementsByTagNameNS(ns, "ServiceListName")[0].childNodes[0].nodeValue;
       list["url"] = lists[j]
-        .getElementsByTagNameNS(ns, "ServiceListURI")[0]
-        .getElementsByTagNameNS(servicediscoveryNS, "URI")[0].childNodes[0].nodeValue;
+          .getElementsByTagNameNS(ns, "ServiceListURI")[0]
+          .getElementsByTagNameNS(servicediscoveryNS, "URI")[0].childNodes[0].nodeValue;
       servicelists.push(list);
     }
     providerslist.push(info);

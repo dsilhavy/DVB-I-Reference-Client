@@ -3,6 +3,8 @@ var channels = [];
 var epg = null;
 var uiHideTimeout = null;
 var player;
+var hlsPlayer;
+var video;
 var streamInfoUpdate = null;
 var minimumAge = 0;
 var programChangeTimer = null;
@@ -97,35 +99,35 @@ window.onload = function () {
   if (paramList) {
     paramList = decodeURIComponent(paramList);
     showModalDialog(
-      "<img src='images/icons-128.png'/><br/>" +
+        "<img src='images/icons-128.png'/><br/>" +
         "Welcome to the DVB Project's DVB-I reference application.<br/>" +
         "You are using " +
         paramList +
         "<br/>" +
         "You can select another service list from the settings.",
-      function () {
-        listSelected(paramList);
-      }
+        function () {
+          listSelected(paramList);
+        }
     );
   } else if (serviceList) {
     listSelected(serviceList);
   } else {
     showModalDialog(
-      "<img src='images/icons-128.png'/><br/>" +
+        "<img src='images/icons-128.png'/><br/>" +
         "Welcome to the DVB Project's DVB-I reference application.<br/>" +
         "You have no service list selected.<br/>" +
         "After clicking ok, please select a service list from the list",
-      function () {
-        $("#settings").show();
-        showSettings("servicelist_registry");
-        loadServicelistProviders(PROVIDER_LIST, true);
-        loadNIPProviders(true);
-      }
+        function () {
+          $("#settings").show();
+          showSettings("servicelist_registry");
+          loadServicelistProviders(PROVIDER_LIST, true);
+          loadNIPProviders(true);
+        }
     );
   }
   uiHideTimeout = setTimeout(hideUI, 5000);
   $(".video_wrapper").on("click touchstart", resetHideTimeout);
-  var video = document.getElementById("video");
+  video = document.getElementById("video");
   video.addEventListener("play", (event) => {
     var subtitles = player.getTracksFor("text");
     if (subtitles && subtitles.length > 0) {
@@ -141,8 +143,10 @@ window.onload = function () {
   });
 
   player = dashjs.MediaPlayer().create();
+  hlsPlayer = new Hls();
   player.initialize(video);
   player.setAutoPlay(true);
+  hlsPlayer.attachMedia(video);
   player.on("error", function (e) {
     console.log(e);
     $("#notification").show();
@@ -288,16 +292,16 @@ function openProgramInfo(program) {
 
 function loadServicelist(list) {
   $.get(
-    list,
-    function (data) {
-      serviceList = parseServiceList(data, null, supportedDrmSystems);
-      if (serviceList.regions) {
-        selectRegion();
-      } else {
-        serviceListSelected();
-      }
-    },
-    "text"
+      list,
+      function (data) {
+        serviceList = parseServiceList(data, null, supportedDrmSystems);
+        if (serviceList.regions) {
+          selectRegion();
+        } else {
+          serviceListSelected();
+        }
+      },
+      "text"
   ).fail(function () {
     $("#notification").text("Error loading service list. You can select a new service list from the settings.");
     $("#notification").show();
@@ -408,7 +412,7 @@ function selectServiceList() {
   showSettings("servicelist_registry");
   loadServicelistProviders(PROVIDER_LIST);
   try {
-  loadNIPProviders();
+    loadNIPProviders();
   }
   catch(e) {
     console.log(e)
@@ -443,17 +447,17 @@ function loadNIPProviders(hideCloseButton,filter) {
         var sep = document.createElement("div");
         sep.classList.add("text-white","p-1","rounded")
         loadServicelistProviders(
-        generateServiceListQuery(services[i].dvbi_sep,
-                                  filter.providers,
-                                  filter.language,
-                                  filter.genre,
-                                  filter.targetCountry,
-                                  filter.regulatorListFlag,
-                                  filter.delivery)
-                                ,hideCloseButton,sep)
-        
+            generateServiceListQuery(services[i].dvbi_sep,
+                filter.providers,
+                filter.language,
+                filter.genre,
+                filter.targetCountry,
+                filter.regulatorListFlag,
+                filter.delivery)
+            ,hideCloseButton,sep)
+
         if(postions.length > 0 ) {
-          var positionElement = document.createElement("h4"); 
+          var positionElement = document.createElement("h4");
           positionElement.appendChild(document.createTextNode("Orbital position:"+postions.join(", ")));
           seps.push(positionElement)
         }
@@ -465,7 +469,7 @@ function loadNIPProviders(hideCloseButton,filter) {
         provider2.appendChild(document.createTextNode(services[i].dvbi_sl));
         provider2.href = "javascript:listSelected('" + services[i].dvbi_sl + "')";
         container.appendChild(provider2);
-        var positionElement = document.createElement("span"); 
+        var positionElement = document.createElement("span");
         positionElement.appendChild(document.createTextNode("Orbital position:"+postions.join(", ")));
         container.appendChild(positionElement);
         sls.push(container)
@@ -499,13 +503,13 @@ function filterServiceLists() {
   var targetCountry = $("#country").val().split(",");
   var regulatorListFlag = $("#regulator").is(":checked");
   var delivery = $(".delivery:checked")
-    .map(function (i, e) {
-      return e.value;
-    })
-    .toArray();
-  
+      .map(function (i, e) {
+        return e.value;
+      })
+      .toArray();
+
   loadServicelistProviders(
-    generateServiceListQuery(PROVIDER_LIST, providers, language, genre, targetCountry, regulatorListFlag, delivery)
+      generateServiceListQuery(PROVIDER_LIST, providers, language, genre, targetCountry, regulatorListFlag, delivery)
   );
   loadNIPProviders(false,{ providers: providers,language: language, genre: genre,targetCountry: targetCountry,regulatorListFlag: regulatorListFlag, delivery: delivery})
 
@@ -518,28 +522,28 @@ function loadServicelistProviders(list, hideCloseButton, listElement) {
     $("#close_service_providers").show();
   }
   $.get(
-    list,
-    function (data) {
-      var servicelists = parseServiceListProviders(data);
-      if(!listElement) {
-        listElement = document.getElementById("servicelists");
-      }
-      $(listElement).empty();
-      for (var i = 0; i < servicelists.length; i++) {
-        var provider3 = document.createElement("h4");
-        provider3.appendChild(document.createTextNode(servicelists[i]["name"]));
-        listElement.appendChild(provider3);
-        for (var j = 0; j < servicelists[i]["servicelists"].length; j++) {
-          var container = document.createElement("div");
-          var provider2 = document.createElement("a");
-          provider2.appendChild(document.createTextNode(servicelists[i]["servicelists"][j]["name"]));
-          provider2.href = "javascript:listSelected('" + servicelists[i]["servicelists"][j]["url"] + "')";
-          container.appendChild(provider2);
-          listElement.appendChild(container);
+      list,
+      function (data) {
+        var servicelists = parseServiceListProviders(data);
+        if(!listElement) {
+          listElement = document.getElementById("servicelists");
         }
-      }
-    },
-    "text"
+        $(listElement).empty();
+        for (var i = 0; i < servicelists.length; i++) {
+          var provider3 = document.createElement("h4");
+          provider3.appendChild(document.createTextNode(servicelists[i]["name"]));
+          listElement.appendChild(provider3);
+          for (var j = 0; j < servicelists[i]["servicelists"].length; j++) {
+            var container = document.createElement("div");
+            var provider2 = document.createElement("a");
+            provider2.appendChild(document.createTextNode(servicelists[i]["servicelists"][j]["name"]));
+            provider2.href = "javascript:listSelected('" + servicelists[i]["servicelists"][j]["url"] + "')";
+            container.appendChild(provider2);
+            listElement.appendChild(container);
+          }
+        }
+      },
+      "text"
   );
 }
 
@@ -592,27 +596,27 @@ function updateStreamInfo() {
     try {
       var settings = player.getSettings();
       document.getElementById("live_settings").innerHTML =
-        "Low latency mode:" +
-        settings.streaming.lowLatencyEnabled +
-        " Delay:" +
-        settings.streaming.liveDelay +
-        "<br/>Min drift:" +
-        settings.streaming.liveCatchUpMinDrift +
-        " Catchup Rate" +
-        settings.streaming.liveCatchUpPlaybackRate;
+          "Low latency mode:" +
+          settings.streaming.lowLatencyEnabled +
+          " Delay:" +
+          settings.streaming.liveDelay +
+          "<br/>Min drift:" +
+          settings.streaming.liveCatchUpMinDrift +
+          " Catchup Rate" +
+          settings.streaming.liveCatchUpPlaybackRate;
       var audioTrack = player.getBitrateInfoListFor("audio")[player.getQualityFor("audio")];
       var videoTrack = player.getBitrateInfoListFor("video")[player.getQualityFor("video")];
       var bestAudio = player.getTopBitrateInfoFor("audio");
       var bestVideo = player.getTopBitrateInfoFor("video");
       if (audioTrack) {
         document.getElementById("audio_bitrate").innerHTML =
-          audioTrack.bitrate / 1000 + "kbits (max:" + bestAudio.bitrate / 1000 + "kbits)";
+            audioTrack.bitrate / 1000 + "kbits (max:" + bestAudio.bitrate / 1000 + "kbits)";
       }
       if (videoTrack) {
         document.getElementById("video_bitrate").innerHTML =
-          videoTrack.bitrate / 1000 + "kbits (max:" + bestVideo.bitrate / 1000 + "kbits)";
+            videoTrack.bitrate / 1000 + "kbits (max:" + bestVideo.bitrate / 1000 + "kbits)";
         document.getElementById("video_resolution").innerHTML =
-          videoTrack.width + "x" + videoTrack.height + " (max:" + bestVideo.width + "x" + bestVideo.height + ")";
+            videoTrack.width + "x" + videoTrack.height + " (max:" + bestVideo.width + "x" + bestVideo.height + ")";
       }
       document.getElementById("live_latency").innerHTML = player.getCurrentLiveLatency() + "s";
     } catch (e) {
@@ -812,13 +816,13 @@ function showSettings(settingspage) {
 
 function showParentalSettings() {
   checkParentalPIN(
-    "Enter PIN to access parental settings",
-    function () {
-      showSettings("parental_settings");
-    },
-    function () {
-      console.log("Incorrect PIN entered");
-    }
+      "Enter PIN to access parental settings",
+      function () {
+        showSettings("parental_settings");
+      },
+      function () {
+        console.log("Incorrect PIN entered");
+      }
   );
 }
 
@@ -883,15 +887,15 @@ function parseXmlAit(data) {
     var appDescriptor = applications[i].getElementsByTagNameNS("urn:dvb:mhp:2009", "applicationDescriptor")[0];
     app.priority = appDescriptor.getElementsByTagNameNS("urn:dvb:mhp:2009", "priority")[0].childNodes[0].nodeValue;
     app.controlCode = appDescriptor.getElementsByTagNameNS(
-      "urn:dvb:mhp:2009",
-      "controlCode"
+        "urn:dvb:mhp:2009",
+        "controlCode"
     )[0].childNodes[0].nodeValue;
     var appTransport = applications[i].getElementsByTagNameNS("urn:dvb:mhp:2009", "applicationTransport")[0];
     app.transportType = appTransport.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
     app.urlbase = appTransport.getElementsByTagNameNS("urn:dvb:mhp:2009", "URLBase")[0].childNodes[0].nodeValue;
     app.location = applications[i].getElementsByTagNameNS(
-      "urn:dvb:mhp:2009",
-      "applicationLocation"
+        "urn:dvb:mhp:2009",
+        "applicationLocation"
     )[0].childNodes[0].nodeValue;
     list.push(app);
   }
