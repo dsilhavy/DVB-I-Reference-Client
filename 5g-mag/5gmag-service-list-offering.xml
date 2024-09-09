@@ -40,10 +40,10 @@
             </sld:ElectronicAddress>
         </sld:Provider>
         <sld:ServiceListOffering>
-            <sld:ServiceListName>5GBC via DVB-I</sld:ServiceListName>
+            <sld:ServiceListName>DVB-I on 5G Broadcast</sld:ServiceListName>
             <sld:ServiceListURI contentType="application/xml">
                 <dvbisd:URI>
-                    http://10.147.67.219:3333/dvb-i/5g-mag/5g-mag-service-list.xml
+                    http://192.168.0.101:3333/dvb-i/5g-mag/5g-mag-service-list-test.xml
                 </dvbisd:URI>
             </sld:ServiceListURI>
             <sld:TargetCountry>DEU</sld:TargetCountry>
