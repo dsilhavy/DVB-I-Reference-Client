@@ -318,7 +318,7 @@ function serviceListSelected() {
   if (serviceList.image) {
     $("#list_logo").attr("src", serviceList.image);
   } else {
-    $("#list_logo").attr("src", "images/logo_dvbi_sofia.png");
+    $("#list_logo").attr("src", "images/logo_dvbi_5gmag.png");
   }
   var channelIndex = 0;
   for (var i = 0; i < serviceList.services.length; i++) {
