@@ -21,11 +21,11 @@
         <ServiceInstance priority="1">
             <OtherDeliveryParameters extensionName="vnd.apple.mpegurl" xsi:type="hls:m3u8RefType">
                 <hls:UriBasedLocation contentType="application/vnd.apple.mpegurl">
-                    <dvbi-types:URI>http://127.0.0.1:3020/watchfolder/hls/manifest.m3u8</dvbi-types:URI>
+                    <dvbi-types:URI>http://127.0.0.1:3020/watchfolder/hls/stream_0.m3u8</dvbi-types:URI>
                 </hls:UriBasedLocation>
             </OtherDeliveryParameters>
         </ServiceInstance>
-        <ServiceName xml:lang="en">5G test service 1</ServiceName>
+        <ServiceName xml:lang="en">FROM DEVICE</ServiceName>
         <ProviderName xml:lang="en">OnScreen Publishing</ProviderName>
         <ServiceType href="urn:dvb:metadata:cs:ServiceTypeCS:2019:linear"/>
     </Service>
@@ -34,11 +34,11 @@
         <ServiceInstance priority="1">
             <OtherDeliveryParameters extensionName="vnd.apple.mpegurl" xsi:type="hls:m3u8RefType">
                 <hls:UriBasedLocation contentType="application/vnd.apple.mpegurl">
-                    <dvbi-types:URI>http://127.0.0.1:3020/watchfolder/hls/stream_0.m3u8</dvbi-types:URI>
+                    <dvbi-types:URI>http://192.168.0.101:3333/watchfolder/hls/stream_0.m3u8</dvbi-types:URI>
                 </hls:UriBasedLocation>
             </OtherDeliveryParameters>
         </ServiceInstance>
-        <ServiceName xml:lang="en">5G test service 2</ServiceName>
+        <ServiceName xml:lang="en">DIRECT TO CDN</ServiceName>
         <ProviderName xml:lang="en">OnScreen Publishing</ProviderName>
         <ServiceType href="urn:dvb:metadata:cs:ServiceTypeCS:2019:linear"/>
     </Service>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ServiceList xml:lang="en" version="1" id="tag:dvb.org,2024:ref-example"
+             xmlns="urn:dvb:metadata:servicediscovery:2024" xmlns:dvbi-types="urn:dvb:metadata:servicediscovery-types:2023" xmlns:tva="urn:tva:metadata:2024"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:dvb:metadata:servicediscovery:2024 schemas/dvbi_v6.0.xsd">
+    <Name>DVB-I example service list</Name>
+    <ProviderName>DVB</ProviderName>
+    <LCNTableList>
+        <LCNTable>
+            <LCN channelNumber="1" serviceRef="tag:dvb.org,2020:sid1"/>
+            <LCN channelNumber="2" serviceRef="tag:dvb.org,2020:sid2"/>
+            <LCN channelNumber="4" serviceRef="tag:dvb.org,2020:sid3"/>
+            <!--      <LCN channelNumber="8" serviceRef="tag:dvb.org,2020:sid5"/> -->
+            <!--      <LCN channelNumber="12" serviceRef="tag:dvb.org,2020:sid6"/> -->
+            <!--      <LCN channelNumber="34" serviceRef="tag:dvb.org,2020:sid7"/> -->
+            <!--      <LCN channelNumber="324" serviceRef="tag:dvb.org,2020:sid8"/> -->
+            <!--      <LCN channelNumber="642" serviceRef="tag:dvb.org,2020:sid9"/> -->
+            <!--      <LCN channelNumber="640" serviceRef="tag:dvb.org,2020:sid10"/> -->
+            <!--      <LCN channelNumber="641" serviceRef="tag:dvb.org,2020:sid11"/> -->
+            <!--      <LCN channelNumber="643" serviceRef="tag:dvb.org,2020:sid12"/> -->
+            <!--      <LCN channelNumber="644" serviceRef="tag:dvb.org,2020:sid13"/> -->
+            <!--      <LCN channelNumber="645" serviceRef="tag:dvb.org,2020:sid14"/>-->
+            <!--      <LCN channelNumber="5" serviceRef="tag:dvb.org,2020:sid16"/> -->
+            <!--      <LCN channelNumber="6" serviceRef="tag:dvb.org,2020:sid17"/> -->
+            <LCN channelNumber="647" serviceRef="tag:dvb.org,2020:sid15"/>
+            <LCN channelNumber="648" serviceRef="tag:dvb.org,2020:sid18"/>
+            <LCN channelNumber="649" serviceRef="tag:dvb-i-referenceapp,2023:Parental-1"/>
+
+        </LCNTable>
+    </LCNTableList>
+        <Service version="1">
+        <UniqueIdentifier>tag:dvb.org,2020:sid1</UniqueIdentifier>
+        <ServiceInstance priority="1">
+            <DASHDeliveryParameters>
+                <UriBasedLocation contentType="application/dash+xml">
+                    <dvbi-types:URI>http://127.0.0.1:3020/watchfolder/hls/stream_0.m3u8</dvbi-types:URI>
+                </UriBasedLocation>
+            </DASHDeliveryParameters>
+        </ServiceInstance>
+        <ServiceName xml:lang="en">5G-MAG.tv</ServiceName>
+        <ProviderName>5G-MAG</ProviderName>
+        <ContentGuideServiceRef>cgsid_3</ContentGuideServiceRef>
+    </Service>
+    
+</ServiceList>
